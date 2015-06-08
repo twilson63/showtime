@@ -56,4 +56,9 @@ No particular roadmap at the moment, please feel free to take it and hack away,
 I may had syntax highlighting in the future if necessary, please pose issues and 
 provide pull requests if your interested in contributing.
 
+## Thank You
+
+* RevealJS
+* Cleaver
+* xslides
 
