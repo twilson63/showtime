@@ -33,7 +33,8 @@ var server = http.createServer(function (req, res) {
 	}
 	if (/^\/\d+$/.test(req.url)) req.url = '/'
   if (req.url === '/style.css' || req.url === '/'
-    || req.url === '/bundle.js') {
+    || req.url === '/bundle.js'
+    || req.url === '/animate.min.css') {
     st0(req, res);
   }
   else st1(req, res);

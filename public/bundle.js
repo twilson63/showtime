@@ -18,7 +18,9 @@ var h = require('virtual-dom/h')
 
 var state = Immutable.Map({
 	current: Number(location.pathname.slice(1) || '0') || 0,
-	slides: ['# No Slides']
+	slides: ['# No Slides'],
+	transition: false,
+	direction: 'right'
 })
 
 var loop = main(state, render, require('virtual-dom'))
@@ -85,7 +87,12 @@ function render (state) {
 	var incode = false
 	var code = []
 
-	return h('div', slide.split('\n').map(function (l) {
+	var animate = state.get('transition') ? 'animated slideOutLeft' : 'animated slideInRight'
+	if (state.get('direction') === 'left') {
+		animate = state.get('transition') ? 'animated slideOutRight' : 'animated slideInLeft'
+	}
+
+	return h('div', { className: animate }, slide.split('\n').map(function (l) {
 			if (/^###/.test(l)) {
 				return h('h3', { style: h3 }, l.replace('###', ''))
 			}
@@ -140,9 +147,11 @@ window.addEventListener('keydown', function (ev) {
   var slides = state.get('slides')
 
 	if (ev.keyCode === 37) { // left
+		state = state.set('direction', 'left')
     show(current - 1)
   }
   else if (ev.keyCode === 39) { // right
+  	state = state.set('direction', 'right')
     show(current + 1)
   }
   else if (ev.keyCode === 48 || ev.keyCode === 36) { // 0 or home
@@ -160,13 +169,18 @@ window.addEventListener('popstate', function (ev) {
 })
 
 function show (n) {
-  var slides = state.get('slides')
-	n = Math.max(0, n) % slides.length
-  state = state.set('current', n)
-  window.history.pushState(null, String(n), '#/' + n);
+	state = state.set('transition', true)
   loop.update(state);
-  window.scrollTo(0, 0);
 
+  setTimeout(function () {
+		var slides = state.get('slides')
+		n = Math.max(0, n) % slides.length
+	  state = state.set('current', n)
+	  window.history.pushState(null, String(n), '#/' + n);
+	  state = state.set('transition', false)
+	  loop.update(state);
+	  window.scrollTo(0, 0);
+  }, 200)
 }
 },{"cssify":2,"domify":3,"immutable":4,"main-loop":5,"url":59,"virtual-dom":15,"virtual-dom/h":14,"xhr":46}],2:[function(require,module,exports){
 module.exports = function (css, customDocument) {
