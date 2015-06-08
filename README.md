@@ -37,8 +37,8 @@ Create a markdownish file using `---` three dashes to separate your slides.
 Save this file as `demo.md` then serve using `showtime`
 
 ```
-
 showtime demo.md -p 3000
+```
 
 And now you have a simple slideshow app ready to rock.
 
