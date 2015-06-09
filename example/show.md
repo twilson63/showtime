@@ -43,3 +43,20 @@ link https://gist.github.com/twilson63/881b307f7eb02ae9d4bd
 ```
 var hello = 'World'
 ```
+
+---
+
+Animations are supported YEAH!
+
+---
+
+You can override the showtime css by creating a style.css
+
+```
+body {
+  background-color: #fea;
+  color: #222;
+  font-family: 'Raleway';
+}
+```
+

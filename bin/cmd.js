@@ -18,6 +18,8 @@ if (!file) {
 	process.exit(1)
 }
 
+var stylesOverride = fs.existsSync('./style.css')
+
 var st1 = ecstatic(path.dirname(file))
 
 var server = http.createServer(function (req, res) {
@@ -32,7 +34,11 @@ var server = http.createServer(function (req, res) {
 		return
 	}
 	if (/^\/\d+$/.test(req.url)) req.url = '/'
-  if (req.url === '/style.css' || req.url === '/'
+  if (req.url === '/style.css' && !stylesOverride) {
+    st0(req,res)
+    return
+  }
+  if (req.url === '/'
     || req.url === '/bundle.js'
     || req.url === '/animate.min.css') {
     st0(req, res);

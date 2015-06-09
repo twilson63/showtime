@@ -1,7 +1,8 @@
 # Showtime
 
-A slideshow application that takes a markdown like file and creates a slideshow site. 
-This is more of a weekend hack to play around with `main-loop` and `virtual-dom` 
+Showtime is a low fidelity html slideshow presentation tool, that uses a markdown-ish file as its slideshow source.  See example below.
+
+This is more of a weekend hack to play around with `main-loop` and `virtual-dom`, but feel free to use as needed. 
 
 ## Install
 
@@ -41,6 +42,18 @@ showtime demo.md -p 3000
 ```
 
 And now you have a simple slideshow app ready to rock.
+
+If you want to change the default color/background color, simply create a style.css file in the same folder as your slide markdown file.
+
+``` css
+body {
+  background-color: mediumpurple;
+  color: greenyellow;
+  font-family: 'Raleway';
+}
+```
+
+See the `./example` folder for more details.
 
 ## Use Cases
 
