@@ -7382,7 +7382,7 @@ module.exports = function (state) {
       
       if (incode && /^```/.test(l)) { 
         incode = false
-        return h('pre', { style: { 'margin-left': '200px' }}, [
+        return h('pre', { style: { 'margin-left': '200px', 'margin-top': '20px' }}, [
           h('code', { style: css.codeCss }, code.join('\n'))
         ])
       }
@@ -7435,7 +7435,7 @@ exports.p = {
 
 exports.codeCss = {
   'font-size': '200%',
-  'margin': '0 0 0 200px'
+  'margin': '0 0 0 0'
 }
 
 // exports.img = {
