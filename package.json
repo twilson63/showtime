@@ -2,7 +2,7 @@
   "name": "showtime",
   "version": "1.0.3",
   "description": "A slideshow application that takes a markdown like file and creates a slideshow site.  This is more of a weekend hack to play around with `main-loop` and `virtual-dom`",
-  "main": "index.js",
+  "main": "browser.js",
   "scripts": {
     "bundle": "browserify browser.js -o public/bundle.js",
     "test": "echo \"Error: no test specified\" && exit 1"

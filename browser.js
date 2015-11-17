@@ -14,10 +14,16 @@ var loop = main(state, require('./render'), require('virtual-dom'))
 document.body.appendChild(loop.target)
 
 // get slides
-xhr('/slides.md', function (err, res, body) {
-	state = state.set('slides', body.toString().split('\n---\n'))
-	loop.update(state)
-})
+var buildSlides = module.exports = function (slides) {
+	xhr(slides, function (err, res, body) {
+		state = state.set('slides', body.toString().split('\n---\n'))
+		loop.update(state)
+	})
+}
+
+if (!module.parent) {
+	buildSlides('/slides.md')
+}
 
 window.addEventListener('keydown', function (ev) {
   var current = state.get('current')
