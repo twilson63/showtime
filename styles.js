@@ -30,7 +30,7 @@ exports.p = {
 
 exports.codeCss = {
   'font-size': '200%',
-  'margin': '50px 0 0 200px'
+  'margin': '0 0 0 0'
 }
 
 // exports.img = {

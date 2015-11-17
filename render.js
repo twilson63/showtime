@@ -57,7 +57,7 @@ module.exports = function (state) {
       
       if (incode && /^```/.test(l)) { 
         incode = false
-        return h('pre', [
+        return h('pre', { style: { 'margin-left': '200px', 'margin-top': '20px' }}, [
           h('code', { style: css.codeCss }, code.join('\n'))
         ])
       }

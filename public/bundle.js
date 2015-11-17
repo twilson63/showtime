@@ -7139,10 +7139,11 @@ function createXHR(options, callback) {
         // IE must die
     }
     xhr.ontimeout = errorFunc
-    xhr.open(method, uri, !sync)
+    xhr.open(method, uri, !sync, options.username, options.password)
     //has to be after open
-    xhr.withCredentials = !!options.withCredentials
-    
+    if(!sync) {
+        xhr.withCredentials = !!options.withCredentials
+    }
     // Cannot set timeout with sync request
     // not setting timeout on the xhr object, because of old webkits etc. not handling that correctly
     // both npm's request and jquery 1.x use this kind of timeout, so this is being consistent
@@ -7389,7 +7390,7 @@ module.exports = function (state) {
       
       if (incode && /^```/.test(l)) { 
         incode = false
-        return h('pre', [
+        return h('pre', { style: { 'margin-left': '200px', 'margin-top': '20px' }}, [
           h('code', { style: css.codeCss }, code.join('\n'))
         ])
       }
@@ -7442,7 +7443,7 @@ exports.p = {
 
 exports.codeCss = {
   'font-size': '200%',
-  'margin': '50px 0 0 200px'
+  'margin': '0 0 0 0'
 }
 
 // exports.img = {
