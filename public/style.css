@@ -1,5 +1,39 @@
+html {
+  height: 100%;
+}
 body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+
+  min-height: 100%;
 	background-color: #add8e6;
 	color: #fff;
 	font-family: 'Raleway';
+}
+
+div {
+  width: 100%;
+  height: 100%;
+  background: #fae;
+  font: bold 150% sans-serif;
+  text-shadow: 0 1px 2px rgba(0,0,0,.5);
+  overflow: hidden; resize: both; /* just for this demo */
+  color: white;
+}
+
+svg {
+  width: 100%; height: 100%;
+  pointer-events: none; /* so that you can resize the element */
+  font-size: 5em;
+}
+
+text {
+  text-anchor: middle;
+  pointer-events: auto; /* Cancel the svg’s pointer-events */
+  fill: #fff;
+}
+
+p {
+  font: italic 100% Georgia, serif;
 }

@@ -64,3 +64,16 @@ exports.vertical = {
     'flex-direction': 'column',
     'justify-content': 'center'
 }
+
+exports.aligner = {
+  'display': 'flex',
+  'align-items': 'center',
+  'justify-content': 'center',
+  'height': 'auto'
+}
+
+exports.alignerItem = {
+  'max-width': '50%'
+}
+
+

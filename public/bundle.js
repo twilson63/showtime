@@ -7347,7 +7347,7 @@ module.exports = function (state) {
     animate = state.get('transition') ? 'animated slideOutRight' : 'animated slideInLeft'
   }
 
-  return h('div', { className: animate }, slide.split('\n').map(function (l) {
+  return h('div', { className: animate, style: { 'min-height': '100%' } }, slide.split('\n').map(function (l) {
       if (/^###/.test(l)) {
         return h('h3', { style: css.h3 }, l.replace('###', ''))
       }
@@ -7357,7 +7357,15 @@ module.exports = function (state) {
       }
       
       if (/^#/.test(l)) {
-        return h('h1', { style: css.h1 }, l.replace('# ', ''))  
+        //return h('h1', { style: css.h1 }, l.replace('# ', '')) 
+        return h('svg', [
+          h('text', 'Hello World')
+        ])
+        // return h('div', { style: css.aligner }, [
+        //   h('div', { style: css.alignerItem }, [
+        //     h('h1', l.replace('# ', ''))
+        //   ])
+        // ])
       }
       
       if (/^!/.test(l)) {
@@ -7467,6 +7475,17 @@ exports.vertical = {
     'display': 'flex',
     'flex-direction': 'column',
     'justify-content': 'center'
+}
+
+exports.aligner = {
+  'display': 'flex',
+  'align-items': 'center',
+  'justify-content': 'center',
+  'height': 'auto'
+}
+
+exports.alignerItem = {
+  'max-width': '50%'
 }
 
 },{}],53:[function(require,module,exports){
