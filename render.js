@@ -19,23 +19,23 @@ module.exports = function (state) {
       if (/^###/.test(l)) {
         return h('h3', { style: css.h3 }, l.replace('###', ''))
       }
-      
+
       if (/^##/.test(l)) {
         return h('h2', { style: css.h2 }, l.replace('## ', ''))
       }
-      
+
       if (/^#/.test(l)) {
-        //return h('h1', { style: css.h1 }, l.replace('# ', '')) 
-        return h('svg', [
-          h('text', 'Hello World')
-        ])
+        return h('h1', { style: css.h1 }, l.replace('# ', ''))
+        // return h('svg', [
+        //   h('text', 'Hello World')
+        // ])
         // return h('div', { style: css.aligner }, [
         //   h('div', { style: css.alignerItem }, [
         //     h('h1', l.replace('# ', ''))
         //   ])
         // ])
       }
-      
+
       if (/^!/.test(l)) {
         //return h('img', { style: css.img, src: l.replace('! ', '') })
         return h('div', { style: css.horizontal }, [
@@ -44,35 +44,35 @@ module.exports = function (state) {
           ])
         ])
       }
-      
+
       if (/^\*/.test(l)) {
         return h('p', { style: css.bullet }, l.replace('*', '-'))
       }
-      
+
       if (!incode && /^```/.test(l)) {
-        incode = true 
+        incode = true
         code = []
         return
       }
-      
-      if (incode && /^```/.test(l)) { 
+
+      if (incode && /^```/.test(l)) {
         incode = false
         return h('pre', { style: { 'margin-left': '200px', 'margin-top': '20px' }}, [
           h('code', { style: css.codeCss }, code.join('\n'))
         ])
       }
-      
+
       if (incode) {
         code.push(l)
         return
       }
-      
+
       if (/^link/.test(l)) {
         return h('p', {style: css.p}, [
           h('a', { href: l.replace('link ',''), target: '_blank'}, '[Click Here]')
         ])
       }
-      
+
       return h('p', {style: css.p}, l)
     })
   )
