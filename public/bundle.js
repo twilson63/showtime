@@ -15,10 +15,16 @@ var loop = main(state, require('./render'), require('virtual-dom'))
 document.body.appendChild(loop.target)
 
 // get slides
-xhr('/slides.md', function (err, res, body) {
-	state = state.set('slides', body.toString().split('\n---\n'))
-	loop.update(state)
-})
+var buildSlides = module.exports = function (slides) {
+	xhr(slides, function (err, res, body) {
+		state = state.set('slides', body.toString().split('\n---\n'))
+		loop.update(state)
+	})
+}
+
+if (!module.parent) {
+	buildSlides('/slides.md')
+}
 
 window.addEventListener('keydown', function (ev) {
   var current = state.get('current')
@@ -60,6 +66,7 @@ function show (n) {
 	  window.scrollTo(0, 0);
   }, 200)
 }
+
 },{"./render":51,"immutable":2,"main-loop":3,"virtual-dom":13,"xhr":44}],2:[function(require,module,exports){
 /**
  *  Copyright (c) 2014-2015, Facebook, Inc.
@@ -5347,7 +5354,7 @@ module.exports.cancel = function() {
 }).call(this);
 
 /*
-//@ sourceMappingURL=performance-now.map
+
 */
 
 }).call(this,require('_process'))
@@ -7139,11 +7146,10 @@ function createXHR(options, callback) {
         // IE must die
     }
     xhr.ontimeout = errorFunc
-    xhr.open(method, uri, !sync, options.username, options.password)
+    xhr.open(method, uri, !sync)
     //has to be after open
-    if(!sync) {
-        xhr.withCredentials = !!options.withCredentials
-    }
+    xhr.withCredentials = !!options.withCredentials
+    
     // Cannot set timeout with sync request
     // not setting timeout on the xhr object, because of old webkits etc. not handling that correctly
     // both npm's request and jquery 1.x use this kind of timeout, so this is being consistent
@@ -7352,64 +7358,75 @@ module.exports = function (state) {
       if (/^###/.test(l)) {
         return h('h3', { style: css.h3 }, l.replace('###', ''))
       }
-      
+
       if (/^##/.test(l)) {
         return h('h2', { style: css.h2 }, l.replace('## ', ''))
       }
-      
+
       if (/^#/.test(l)) {
-        //return h('h1', { style: css.h1 }, l.replace('# ', '')) 
-        return h('svg', [
-          h('text', 'Hello World')
-        ])
+        return h('h1', { style: css.h1 }, l.replace('# ', ''))
+        // return h('svg', [
+        //   h('text', 'Hello World')
+        // ])
         // return h('div', { style: css.aligner }, [
         //   h('div', { style: css.alignerItem }, [
         //     h('h1', l.replace('# ', ''))
         //   ])
         // ])
       }
-      
+
       if (/^!/.test(l)) {
+        return h('div', { style: {
+          position: 'absolute',
+          height: '800px',
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+          background: 'url("'+  l.replace('! ', '') + '") center / cover'
+        }})
         //return h('img', { style: css.img, src: l.replace('! ', '') })
-        return h('div', { style: css.horizontal }, [
-          h('div', { style: css.vertical }, [
-            h('img', { style: css.img, src: l.replace('! ', '') })
-          ])
-        ])
+
+        // return h('div', { style: css.horizontal }, [
+        //   h('div', { style: css.vertical }, [
+        //     h('img', { style: css.img, src: l.replace('! ', '') })
+        //   ])
+        // ])
       }
-      
+
       if (/^\*/.test(l)) {
         return h('p', { style: css.bullet }, l.replace('*', '-'))
       }
-      
+
       if (!incode && /^```/.test(l)) {
-        incode = true 
+        incode = true
         code = []
         return
       }
-      
-      if (incode && /^```/.test(l)) { 
+
+      if (incode && /^```/.test(l)) {
         incode = false
         return h('pre', { style: { 'margin-left': '200px', 'margin-top': '20px' }}, [
           h('code', { style: css.codeCss }, code.join('\n'))
         ])
       }
-      
+
       if (incode) {
         code.push(l)
         return
       }
-      
+
       if (/^link/.test(l)) {
         return h('p', {style: css.p}, [
           h('a', { href: l.replace('link ',''), target: '_blank'}, '[Click Here]')
         ])
       }
-      
-      return h('p', {style: css.p}, l)
+
+      return null; //h('p', {style: css.p}, l)
     })
   )
 }
+
 },{"./styles":52,"virtual-dom/h":12}],52:[function(require,module,exports){
 // simple styles 
 // for presentation
@@ -7489,6 +7506,8 @@ exports.alignerItem = {
   'max-width': '50%'
 }
 
+
+
 },{}],53:[function(require,module,exports){
 
 },{}],54:[function(require,module,exports){
@@ -7497,32 +7516,66 @@ exports.alignerItem = {
 var process = module.exports = {};
 var queue = [];
 var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
 
 function drainQueue() {
     if (draining) {
         return;
     }
+    var timeout = setTimeout(cleanUpNextTick);
     draining = true;
-    var currentQueue;
+
     var len = queue.length;
     while(len) {
         currentQueue = queue;
         queue = [];
-        var i = -1;
-        while (++i < len) {
-            currentQueue[i]();
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
         }
+        queueIndex = -1;
         len = queue.length;
     }
+    currentQueue = null;
     draining = false;
+    clearTimeout(timeout);
 }
+
 process.nextTick = function (fun) {
-    queue.push(fun);
-    if (!draining) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
         setTimeout(drainQueue, 0);
     }
 };
 
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
 process.title = 'browser';
 process.browser = true;
 process.env = {};
@@ -7544,7 +7597,6 @@ process.binding = function (name) {
     throw new Error('process.binding is not supported');
 };
 
-// TODO(shtylman)
 process.cwd = function () { return '/' };
 process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');

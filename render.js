@@ -37,12 +37,22 @@ module.exports = function (state) {
       }
 
       if (/^!/.test(l)) {
+        return h('div', { style: {
+          position: 'absolute',
+          height: '800px',
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+          background: 'url("'+  l.replace('! ', '') + '") center / cover'
+        }})
         //return h('img', { style: css.img, src: l.replace('! ', '') })
-        return h('div', { style: css.horizontal }, [
-          h('div', { style: css.vertical }, [
-            h('img', { style: css.img, src: l.replace('! ', '') })
-          ])
-        ])
+
+        // return h('div', { style: css.horizontal }, [
+        //   h('div', { style: css.vertical }, [
+        //     h('img', { style: css.img, src: l.replace('! ', '') })
+        //   ])
+        // ])
       }
 
       if (/^\*/.test(l)) {
@@ -73,7 +83,7 @@ module.exports = function (state) {
         ])
       }
 
-      return h('p', {style: css.p}, l)
+      return null; //h('p', {style: css.p}, l)
     })
   )
 }

@@ -18,7 +18,7 @@
 
 ---
 
-! http://awesomesauce.jpg.to
+! http://johnkapeleris.com/blog/wp-content/uploads/2010/10/Six-Thinking-Hats1.jpg
 
 ---
 
@@ -59,4 +59,3 @@ body {
   font-family: 'Raleway';
 }
 ```
-
