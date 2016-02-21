@@ -25,6 +25,10 @@ if (!module.parent) {
 	buildSlides('/slides.md')
 }
 
+window.addEventListener('touchstart', function (e) {
+	
+})
+
 window.addEventListener('keydown', function (ev) {
   var current = state.get('current')
   var slides = state.get('slides')
@@ -45,6 +49,8 @@ window.addEventListener('keydown', function (ev) {
 		show(slides.length - 1)
   }
 })
+
+
 
 window.addEventListener('popstate', function (ev) {
   var n = Number(location.hash.slice(2) || '0') || 0

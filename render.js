@@ -83,6 +83,9 @@ module.exports = function (state) {
         ])
       }
 
+      if (l.trim().length > 0) {
+        return h('p', {style: css.p}, l)
+      }
       return null; //h('p', {style: css.p}, l)
     })
   )
