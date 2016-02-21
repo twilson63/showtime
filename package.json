@@ -1,6 +1,6 @@
 {
   "name": "showtime",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "A slideshow application that takes a markdown like file and creates a slideshow site.  This is more of a weekend hack to play around with `main-loop` and `virtual-dom`",
   "main": "browser.js",
   "scripts": {
